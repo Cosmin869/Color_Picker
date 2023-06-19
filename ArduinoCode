@@ -1,0 +1,36 @@
+//pinii pentru fiecare culoare
+int red = 9;
+int green = 10;
+int blue = 11;
+
+void setup() {
+  pinMode(red, OUTPUT);
+  pinMode(green, OUTPUT);
+  pinMode(blue, OUTPUT);
+  Serial.begin(9600);  // trebuie sa fie aceiasi cu cea de pe python
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    String colorData = Serial.readStringUntil('\n');
+    colorData.trim();
+    
+    // Impartim codul numeric al culorilor
+    int commaIndex = colorData.indexOf(',');
+    String redValue = colorData.substring(0, commaIndex);
+    colorData.remove(0, commaIndex + 1);
+    commaIndex = colorData.indexOf(',');
+    String greenValue = colorData.substring(0, commaIndex);
+    String blueValue = colorData.substring(commaIndex + 1);
+    
+    // convertim din string in int
+    int red = redValue.toInt();
+    int green = greenValue.toInt();
+    int blue = blueValue.toInt();
+    
+    // trimitem pinilor culoarea obtinuta
+    analogWrite(red, red);
+    analogWrite(green, green);
+    analogWrite(blue, blue);
+  }
+}
