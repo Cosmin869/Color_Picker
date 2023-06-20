@@ -8,10 +8,17 @@ void setup() {
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
   Serial.begin(9600);  // trebuie sa fie aceiasi cu cea de pe python
+  attachInterrupt(digitalPinToInterrupt(0), serialEvent, FALLING);
+
 }
 
 void loop() {
-  if (Serial.available() > 0) {
+
+}
+
+void serialEvent(){
+  if (Serial.available()) {
+    //delay(10);
     String colorData = Serial.readStringUntil('\n');
     colorData.trim();
     
@@ -24,13 +31,16 @@ void loop() {
     String blueValue = colorData.substring(commaIndex + 1);
     
     // convertim din string in int
-    int red = redValue.toInt();
-    int green = greenValue.toInt();
-    int blue = blueValue.toInt();
+    int red1 = redValue.toInt();
+    int green1 = greenValue.toInt();
+    int blue1 = blueValue.toInt();
     
     // trimitem pinilor culoarea obtinuta
-    analogWrite(red, red);
-    analogWrite(green, green);
-    analogWrite(blue, blue);
+    analogWrite(red, red1);
+    analogWrite(green, green1);
+    analogWrite(blue, blue1);
+    //delay(1000);
+
+    Serial.flush();
   }
 }
