@@ -1,7 +1,11 @@
 //pinii pentru fiecare culoare
 int red = 9;
-int green = 10;
-int blue = 11;
+int green = 11;
+int blue = 10;
+int inc = 1;
+int dec = 0;
+float lastTimerTime = millis();
+unsigned int rgbColour[3];
 
 void setup() {
   pinMode(red, OUTPUT);
@@ -14,11 +18,39 @@ void setup() {
 
 void loop() {
 
+    if(millis() - lastTimerTime > 3000){
+      if(rgbColour[inc]<255){
+        rgbColour[inc]++;
+        rgbColour[dec]--;
+      }
+      else if(inc==2){
+        inc = 0;
+        dec = 2;
+      }
+      else if(inc==0){
+        inc = 1;
+        dec = 0;
+      }
+      else{
+        inc = 2;
+        dec = 1;
+      }
+      analogWrite(red, rgbColour[0]);
+      analogWrite(blue, rgbColour[2]);
+      analogWrite(green, rgbColour[1]);
+      delay(7);
+    }
+
 }
+
 
 void serialEvent(){
   if (Serial.available()) {
-    //delay(10);
+    rgbColour[0] = 255;
+    rgbColour[1] = 0;
+    rgbColour[2] = 0;
+    inc = 1;
+    dec = 0;
     String colorData = Serial.readStringUntil('\n');
     colorData.trim();
     
@@ -39,8 +71,7 @@ void serialEvent(){
     analogWrite(red, red1);
     analogWrite(green, green1);
     analogWrite(blue, blue1);
-    //delay(1000);
-
+    lastTimerTime = millis();
     Serial.flush();
   }
 }
