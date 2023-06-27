@@ -7,13 +7,16 @@ int dec = 0;
 float lastTimerTime = millis();
 unsigned int rgbColour[3];
 
+
 void setup() {
   pinMode(red, OUTPUT);
   pinMode(green, OUTPUT);
   pinMode(blue, OUTPUT);
   Serial.begin(9600);  // trebuie sa fie aceiasi cu cea de pe python
   attachInterrupt(digitalPinToInterrupt(0), serialEvent, FALLING);
-
+  rgbColour[0] = 255;
+  rgbColour[1] = 0;
+  rgbColour[2] = 0;
 }
 
 void loop() {
